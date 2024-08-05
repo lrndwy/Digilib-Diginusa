@@ -1,14 +1,14 @@
-from django.contrib import admin
-from .models import *
-from django.urls import path
-from django.shortcuts import render, redirect
-from .forms import ImportSiswaForm, ImportGuruForm
-from .utils import process_excel_file_siswa, process_excel_file_guru
-from django.contrib import admin
-from django.utils.html import format_html
-from django.urls import reverse
-from django.contrib.auth.views import LoginView
 from django.conf import settings
+from django.contrib import admin
+from django.contrib.auth.views import LoginView
+from django.shortcuts import redirect, render
+from django.urls import path, reverse
+from django.utils.html import format_html
+
+from .forms import ImportGuruForm, ImportSiswaForm
+from .models import *
+from .utils import process_excel_file_guru, process_excel_file_siswa
+
 
 # Register your models here.
 class MateriGuruAdmin(admin.ModelAdmin):
@@ -37,20 +37,19 @@ admin.site.register(JenjangDanKelas)
 
 @admin.register(FlipPDF)
 class FlipPDFAdmin(admin.ModelAdmin):
-    # list_display = ('title', 'kelas', 'render_link', 'status')
+    list_display = ('title', 'kelas', 'render_link', 'status')
     search_fields = ('title', 'kelas')
     list_editable = ('status',)
-    list_display = ('title', 'kelas', 'status', 'untuk')
 
-    # def render_link(self, obj):
-    #     url = reverse('flippdf_render', args=[obj.id])
-    #     return format_html('<a href="{}" target="_blank">Render FlipPDF</a>', url)
+    def render_link(self, obj):
+        url = reverse('flippdf_render', args=[obj.id])
+        return format_html('<a href="{}">Render FlipPDF</a>', url)
     
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "untuk":
             kwargs["help_text"] = "Kosongkan untuk umum"
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
-    # render_link.short_description = 'Render'
+    render_link.short_description = 'Render'
 
 @admin.register(Guru)
 class GuruAdmin(admin.ModelAdmin):
