@@ -1,0 +1,157 @@
+{% extends 'base_siswa.html' %}
+
+{% load static %}
+
+{% block title %}Dashboard Siswa{% endblock %}
+
+{% block content %}
+{% include 'components/navbar_sidebar_siswa.html' %}
+
+<!-- Content -->
+<div class="mx-auto max-w-screen px-4 2xs:p-[10px] sm:p-4 lg:p-8">
+    {% if siswa %}
+    <div class="mt-16">
+        <form method="get" class="mb-4" id="filterForm">
+            <span class="text-[24px] font-pj-bold-18 mb-4 font-bold">Selamat Datang <span
+                    class="text-cornflowerblue-200">{{siswa.nama}}</span></span>
+            <div class="flex flex-row items-center gap-2 mt-4">
+                <select name="mapel"
+                    class="form-select w-full md:w-64 rounded-md border-gray-300 shadow-sm focus:outline-none h-[40px] px-4 text-[14px] font-pj-bold-18 appearance-none">
+                    <option value="">Semua Mata Pelajaran</option>
+                    {% for mapel in mata_pelajaran %}
+                    <option value="{{ mapel.id }}" 
+                    {% if mapel.id|stringformat:"s" == selected_mapel %} 
+                    selected 
+                    {% endif %}>
+                        {{ mapel.mata_pelajaran }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <button type="submit"
+                    class="bg-cornflowerblue-100 hover:bg-cornflowerblue-200 text-white font-bold border-none py-3 px-5 rounded-md transition duration-300 ease-in-out">
+                    Filter
+                </button>
+            </div>
+        </form>
+    </div>
+
+    {% if buku_kelas %}
+    <div class="p-2 relative">
+        <span class="text-[20px] font-pj-bold-18 mb-4">Buku pelajaran kelas <strong class="text-cornflowerblue-200">
+            {% if siswa.kelas == 'I' %}
+                1
+            {% elif siswa.kelas == 'II' %}
+                2
+            {% elif siswa.kelas == 'III' %}
+                3
+            {% elif siswa.kelas == 'IV' %}
+                4
+            {% elif siswa.kelas == 'V' %}
+                5
+            {% elif siswa.kelas == 'VI' %}
+                6
+            {% elif siswa.kelas == 'VII' %}
+                7
+            {% elif siswa.kelas == 'VIII' %}
+                8
+            {% elif siswa.kelas == 'IX' %}
+                9
+            {% elif siswa.kelas == 'X' %}
+                10
+            {% elif siswa.kelas == 'XI' %}
+                11
+            {% elif siswa.kelas == 'XII' %}
+                12
+            {% else %}
+                {{siswa.kelas}}
+            {% endif %}
+        </strong></span>
+        <div id="slider" class="flex flex-nowrap gap-4 overflow-x-auto scrollbar-hide p-5">
+            {% for buku in buku_kelas %}
+            <div class="bg-white rounded-lg shadow-md p-4 flex flex-col w-60 flex-shrink-0 hover:shadow-sm transition duration-300 ease-in-out"
+                style="height: 100%; display: flex; flex-direction: column;">
+                {% if buku.cover_image %}
+                <div class="flex-grow mb-2 border-md border-gray-300 rounded-md overflow-hidden relative"
+                    style="flex: 1;">
+                    <img src="{{ buku.cover_image.url }}" alt="{{ buku.nama_buku }}" class="w-full h-full object-cover">
+                </div>
+                {% endif %}
+                <h3 class="text-[16px] font-pj-bold-18 mb-1 text-center truncate">{{ buku.nama_buku }}</h3>
+                <p class="text-[12px] font-pj-bold-18 mb-2"><strong>Penerbit:</strong> {{ buku.penerbit }}<br><strong>Mata Pelajaran:</strong> {{ buku.mata_pelajaran }}</p>
+                <a href="{% url 'render_buku' buku.id %}"
+                    class="bg-cornflowerblue-100 hover:bg-cornflowerblue-200 text-white no-underline font-bold py-2 px-4 font-pj-bold-18 rounded-lg mt-auto inline-block text-center text-[16px] transition duration-300 ease-in-out">
+                    Baca Buku
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <p class="text-[14px] font-pj-bold-18">Tidak ada buku yang tersedia untuk kelas Anda saat ini.</p>
+    {% endif %}
+    {% else %}
+    <p class="text-[14px] font-pj-bold-18">Maaf, data siswa tidak ditemukan. Silakan hubungi administrator.</p>
+    {% endif %}
+
+    {% if materi_guru %}
+    <div class="p-2 relative mt-8">
+        <span class="text-[20px] font-pj-bold-18 mb-4">Materi dari Guru untuk kelas <strong
+                class="text-cornflowerblue-200">{{siswa.kelas}}</strong></span>
+        <div id="slider-materi" class="flex flex-nowrap gap-4 overflow-x-auto scrollbar-hide p-5">
+            {% for materi in materi_guru %}
+            <div class="bg-white rounded-lg shadow-md p-4 flex flex-col w-60 flex-shrink-0 hover:shadow-sm transition duration-300 ease-in-out"
+                style="height: 100%; display: flex; flex-direction: column;">
+                {% if materi.cover_image %}
+                <div class="flex-grow mb-2 border-md border-gray-300 rounded-md overflow-hidden relative"
+                    style="flex: 1;">
+                    <img src="{{ materi.cover_image.url }}" alt="{{ materi.nama_materi }}"
+                        class="w-full h-full object-cover">
+                </div>
+                {% endif %}
+                <h3 class="text-[16px] font-pj-bold-18 mb-1 text-center truncate">{{ materi.nama_materi }}</h3>
+                <p class="text-[12px] font-pj-bold-18 mb-2">
+                <strong>Kelas:</strong> {{ materi.kelas }}<br>
+                <strong>Mata Pelajaran:</strong> {{ materi.mata_pelajaran }}
+                </p>
+                <a href="{% url 'render_materi' materi.id %}" class="bg-cornflowerblue-100 hover:bg-cornflowerblue-200 text-white no-underline font-bold py-2 px-4 font-pj-bold-18 rounded-lg mt-auto inline-block text-center text-[16px] transition duration-300 ease-in-out">
+                    Lihat Materi
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <p class="text-[14px] font-pj-bold-18 mt-8">Tidak ada materi yang tersedia untuk kelas Anda saat ini.</p>
+    {% endif %}
+
+    {% if flippdf_kelas %}
+    <div class="p-2 relative mt-8">
+        <span class="text-[20px] font-pj-bold-18 mb-4">Buku Interaktif untuk kelas <strong class="text-cornflowerblue-200">{{siswa.kelas}}</strong></span>
+        <div id="slider-flippdf" class="flex flex-nowrap gap-4 overflow-x-auto scrollbar-hide p-5">
+            {% for flippdf in flippdf_kelas %}
+            <div class="bg-white rounded-lg shadow-md p-4 flex flex-col w-60 flex-shrink-0 hover:shadow-sm transition duration-300 ease-in-out"
+                style="height: 100%; display: flex; flex-direction: column;">
+                {% if flippdf.cover_file %}
+                <div class="flex-grow mb-2 border-md border-gray-300 rounded-md overflow-hidden relative" style="flex: 1;">
+                    <img src="{% get_media_prefix %}{{ flippdf.cover_file }}" alt="{{ flippdf.title }}" class="w-full h-full object-cover">
+                </div>
+                {% endif %}
+                <h3 class="text-[16px] font-pj-bold-18 mb-1 text-center truncate">{{ flippdf.title }}</h3>
+                <p class="text-[12px] font-pj-bold-18 mb-2"><strong>Kelas:</strong> {{ flippdf.kelas }}<br><strong>Mata Pelajaran:</strong> {{ flippdf.mata_pelajaran }}</p>
+                <a href="{% url 'flippdf_render' flippdf.id %}" class="bg-cornflowerblue-100 hover:bg-cornflowerblue-200 text-white no-underline font-bold py-2 px-4 font-pj-bold-18 rounded-lg mt-auto inline-block text-center text-[16px] transition duration-300 ease-in-out">
+                    Lihat FlipPDF
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <p class="text-[14px] font-pj-bold-18 mt-8">Tidak ada FlipPDF yang tersedia untuk kelas Anda saat ini.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+</script>
+{% endblock %}

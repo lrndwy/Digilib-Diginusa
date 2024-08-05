@@ -1,0 +1,165 @@
+{% extends 'base_guru.html' %}
+
+{% load static %}
+
+{% block title %}Manajemen Materi{% endblock %}
+
+{% block content %}
+{% include 'components/navbar_sidebar_guru.html' %}
+
+<div class="mx-auto max-w-screen px-4 2xs:p-[10px] sm:p-4 lg:p-8">
+    <h1 class="text-2xl font-pj-bold-18 text-[32px]  font-bold mt-16 mb-6">Manajemen Materi</h1>
+
+    {% if messages %}
+    <div class="messages mb-6 font-pj-bold-18">
+        {% for message in messages %}
+        <div class="{% if message.tags %}{{ message.tags }}{% endif %} alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="flex flex-wrap -mx-4">
+        <!-- Form Tambah/Edit Materi -->
+        <div class="w-full md:w-1/2 px-4 mb-8">
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <h2 class="text-xl font-pj-bold-18 font-bold mb-4" id="formTitle">Tambah / Edit Materi</h2>
+                <form id="materiForm" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" id="formAction" value="create">
+                    <input type="hidden" name="id" id="materiId">
+
+                    <div class="mb-4">
+                        <label class="block text-gray-600 text-sm font-pj-bold-18 mb-2" for="nama_materi">
+                            Nama Materi
+                        </label>
+                        <input class="w-full px-3 py-2 text-gray-700 border border-solid border-black rounded-lg focus:outline-none id="nama_materi" name="nama_materi" type="text" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-600 text-sm font-pj-bold-18 mb-2" for="file_materi">
+                            File Materi
+                        </label>
+                        <input class="w-full px-3 py-2 text-gray-700 border border-solid border-black rounded-lg focus:outline-none  id="file_materi" name="file_materi" type="file" accept=".pdf">
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="block text-gray-600 text-sm font-pj-bold-18 mb-2" for="kelas">
+                            Kelas
+                        </label>
+                        <select class="w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none focus:border-cornflowerblue-200 appearance-none" id="kelas" name="kelas" required>
+                            {% for kelas in kelas_list %}
+                                <option value="{{ kelas.id }}">{{ kelas.nama_jenjang_kelas }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="flex items-center">
+                            <input type="checkbox" id="status" name="status" class="mr-2 leading-tight">
+                            <span class="text-sm font-pj-bold-18 text-gray-600">Aktif</span>
+                        </label>
+                    </div>
+
+                    <div class="flex items-center justify-start gap-2">
+                        <button class="bg-cornflowerblue-100 hover:bg-cornflowerblue-200 border-none text-white font-pj-bold-18 py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300" type="submit">
+                            Simpan
+                        </button>
+                        <button class="bg-gray-300 hover:bg-gray-400 border-none text-white font-pj-bold-18 py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline transition duration-300" type="button" onclick="resetForm()">
+                            Batal
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Card Jumlah Materi -->
+        <div class="w-full md:w-1/3 px-4 mb-8 font-pj-bold-18">
+            <div class="bg-white shadow-lg rounded-lg p-6">
+                <h2 class="text-xl font-pj-bold-18 font-bold mb-4">Jumlah Materi</h2>
+                <p class="text-4xl font-bold text-cornflowerblue-200">{{ materi_list|length }}</p>
+                <p class="text-gray-500 mt-2">Total materi yang tersedia</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabel Daftar Materi -->
+    <div class="bg-white shadow-lg rounded-lg p-6">
+        <h2 class="text-xl font-pj-bold-18 font-bold mb-4">Daftar Materi</h2>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="px-4 py-2 text-left text-sm font-pj-bold-18 text-gray-600">Nama Materi</th>
+                        <th class="px-4 py-2 text-left text-sm font-pj-bold-18 text-gray-600">Mata Pelajaran</th>
+                        <th class="px-4 py-2 text-left text-sm font-pj-bold-18 text-gray-600">Kelas</th>
+                        <th class="px-4 py-2 text-left text-sm font-pj-bold-18 text-gray-600">Status</th>
+                        <th class="px-4 py-2 text-left text-sm font-pj-bold-18 text-gray-600">Link Materi</th>
+                        <th class="px-4 py-2 text-left text-sm font-pj-bold-18 text-gray-600">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for materi in materi_list %}
+                    <tr class="border-b hover:bg-gray-50 transition duration-200">
+                        <td class="px-4 py-2 text-sm font-pj-bold-18">{{ materi.nama_materi }}</td>
+                        <td class="px-4 py-2 text-sm font-pj-bold-18">{{ materi.mata_pelajaran }}</td>
+                        <td class="px-4 py-2 text-sm font-pj-bold-18">{{ materi.kelas }}</td>
+                        <td class="px-4 py-2 text-sm font-pj-bold-18">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {% if materi.status %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+                                {{ materi.status|yesno:"Aktif,Tidak Aktif" }}
+                            </span>
+                        </td>
+                        <td class="px-4 py-2 text-sm font-pj-bold-18">
+                            {% if materi.file_materi %}
+                                <a href="{{ materi.file_materi.url }}" class="text-cornflowerblue-100 hover:text-cornflowerblue-200">Lihat Materi</a>
+                            {% else %}
+                                <span class="text-gray-400">Tidak ada file</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-4 py-2">
+                            <button onclick="editMateri({{ materi.id }}, '{{ materi.nama_materi }}', '{{ materi.mata_pelajaran.id }}', '{{ materi.kelas.id }}', {{ materi.status|yesno:'true,false' }})" class="bg-cornflowerblue-100 hover:bg-cornflowerblue-200 border-none text-white font-pj-bold-18 py-2 px-3 rounded-md mr-2 transition duration-300">
+                                Edit
+                            </button>
+                            <button onclick="deleteMateri({{ materi.id }})" class="bg-red-500 hover:bg-red-600 border-none text-white font-pj-bold-18 py-2 px-3 rounded-md transition duration-300">
+                                Hapus
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    function editMateri(id, nama, mapel, kelas, status) {
+        document.getElementById('formTitle').innerText = 'Edit Materi';
+        document.getElementById('formAction').value = 'update';
+        document.getElementById('materiId').value = id;
+        document.getElementById('nama_materi').value = nama;
+        document.getElementById('mata_pelajaran').value = mapel;
+        document.getElementById('kelas').value = kelas;
+        document.getElementById('status').checked = status;
+    }
+
+    function deleteMateri(id) {
+        if (confirm('Apakah Anda yakin ingin menghapus materi ini?')) {
+            document.getElementById('formAction').value = 'delete';
+            document.getElementById('materiId').value = id;
+            document.getElementById('materiForm').submit();
+        }
+    }
+
+    function resetForm() {
+        document.getElementById('formTitle').innerText = 'Tambah Materi Baru';
+        document.getElementById('formAction').value = 'create';
+        document.getElementById('materiId').value = '';
+        document.getElementById('materiForm').reset();
+    }
+</script>
+{% endblock %}

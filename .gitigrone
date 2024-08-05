@@ -1,0 +1,7 @@
+.dist
+.env
+.gitignore
+.gitkeep
+.gitmodules
+.vscode
+.DS_Store

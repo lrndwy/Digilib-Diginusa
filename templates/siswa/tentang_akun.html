@@ -1,0 +1,78 @@
+{% extends 'base_siswa.html' %}
+
+{% load static %}
+
+{% block title %}Edit Informasi Akun{% endblock %}
+
+{% block content %}
+{% include 'components/navbar_sidebar_siswa.html' %}
+
+<!-- Content -->
+<div class="font-pj-bold-18 mt-20 flex flex-col items-center justify-center">
+    <h1 class="text-2xl font-bold mb-6 text-cornflowerblue-200">Tentang Akun</h1>
+
+    <div class="flex items-center justify-center p-4 shadow-lg w-fit rounded-xl">
+        <form method="post" class="p-6 flex flex-col items-center justify-center w-full">
+            {% csrf_token %}
+
+            <div class="flex flex-wrap justify-center w-full gap-4 pr-5">
+                <div class="m-2 w-full md:w-5/12">
+                    <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama:</label>
+                    <input type="text"
+                        class="w-full rounded-md border border-solid border-black shadow-sm h-10 pl-3 focus:outline-none"
+                        id="nama" name="nama" value="{{ siswa.nama }}">
+                </div>
+
+                <div class="m-2 w-full md:w-5/12">
+                    <label for="username" class="block text-sm font-medium text-gray-7000 mb-1">Nama Pengguna:</label>
+                    <input type="text"
+                        class="w-full rounded-md border border-solid border-black shadow-sm h-10 pl-3 focus:outline-none"
+                        id="username" name="username" value="{{ user.username }}">
+                </div>
+
+                <div class="m-2 w-full md:w-5/12">
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email:</label>
+                    <input type="email"
+                        class="w-full rounded-md border border-solid border-black shadow-sm h-10 pl-3 focus:outline-none"
+                        id="email" name="email" value="{{ user.email }}">
+                </div>
+
+                <div class="m-2 w-full md:w-5/12">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Kata Sandi Baru:</label>
+                    <input type="password"
+                        class="w-full rounded-md border border-solid border-black shadow-sm h-10 pl-3 focus:outline-none"
+                        id="password" name="password">
+                </div>
+
+                <div class="m-2 w-full md:w-5/12">
+                    <label for="namaSekolah" class="block text-sm font-medium text-gray-7000 mb-1">Nama Sekolah:</label>
+                    <input type="text"
+                        class="w-full rounded-md border border-solid border-black shadow-sm h-10 pl-3 focus:outline-none"
+                        id="namaSekolah" name="namaSekolah" value="{{ siswa.sekolah }}" readonly>
+                </div>
+
+                <div class="m-2 w-full md:w-5/12">
+                    <label for="kelas" class="block text-sm font-medium text-gray-700 mb-1">Kelas:</label>
+                    <input type="text"
+                        class="w-full rounded-md border border-solid border-black shadow-sm h-10 pl-3 focus:outline-none"
+                        id="kelas" name="kelas" value="{{ siswa.kelas }}" readonly>
+                </div>
+
+                <div class="m-2 w-full md:w-5/12">
+                    <!-- Div kosong untuk menjaga keseimbangan -->
+                </div>
+
+                <div class="m-2 w-full md:w-5/12 flex justify-end">
+                    <button type="submit"
+                        class="bg-cornflowerblue-100 hover:bg-cornflowerblue-200 text-white font-bold font-pj-bold-18 text-[16px] py-2 px-4 rounded-md border-none transition duration-300 ease-in-out">
+                        Simpan Perubahan
+                    </button>
+                </div>
+
+            </div>
+
+
+        </form>
+    </div>
+</div>
+{% endblock %}

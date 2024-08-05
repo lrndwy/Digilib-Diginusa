@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="id">
+
+{% load static %}
+{% load tailwind_tags %}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+    <title>DigiLib - Masuk Akun</title>
+    <link rel="icon" type="image/png" href="{% static 'images/logo-color-2-2@2x.png' %}">
+
+    {% comment %} <link rel="stylesheet" href="{% static 'css/output.css' %}"> {% endcomment %}
+    {% tailwind_css %}
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,800&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hammersmith+One&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arial:wght@400;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Sans+Caption:wght@700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT+Serif+Caption&display=swap" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" />
+    <style>
+        .custom-height {
+            height: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .custom-height {
+                height: 100vh;
+            }
+        }
+
+        html {
+            scrollbar-width: none; /* Untuk Firefox */
+            -ms-overflow-style: none; /* Untuk Internet Explorer dan Edge */
+        }
+        
+        /* Menghilangkan scrollbar */
+        body {
+            scrollbar-width: none; /* Untuk Firefox */
+            -ms-overflow-style: none; /* Untuk Internet Explorer dan Edge */
+        }
+        
+        body::-webkit-scrollbar {
+            display: none; /* Untuk Chrome, Safari, dan Opera */
+        }
+    </style>
+</head>
+
+<body class="m-0 p-0 flex flex-col w-full justify-center">
+
+    <!-- Tombol Kembali ke Beranda -->
+    <a href="{% url 'index' %}"
+        class="flex mt-4 items-center text-white font-quicksand no-underline font-bold text-sm sm:text-base w-fit md:text-lg lg:text-xl z-50 py-2 px-4 rounded-full transition duration-300 ease-in-out">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Kembali ke Beranda
+    </a>
+
+    {% if messages %}
+    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 items-start z-50 flex justify-center font-poppins">
+        <div class="bg-yellow-50 rounded-lg p-4 max-w-sm mx-4 mt-4 shadow-lg animate-slide-down relative">
+            {% for message in messages %}
+            <div role="alert" class="rounded border-l-4 border-yellow-500 bg-yellow-50 p-4 mb-4">
+                <div class="flex items-center gap-2 text-yellow-800">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+                        <path fill-rule="evenodd"
+                            d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003zM12 8.25a.75.75 0 01.75.75v3.75a.75.75 0 01-1.5 0V9a.75.75 0 01.75-.75zm0 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z"
+                            clip-rule="evenodd" />
+                    </svg>
+
+                    <strong class="block font-medium">Peringatan</strong>
+                </div>
+
+                <p class="mt-2 text-sm text-yellow-700">
+                    {{ message }}
+                </p>
+            </div>
+            {% endfor %}
+            <button class="border-none absolute top-2 right-2 text-yellow-800 hover:text-yellow-6000"
+                onclick="this.parentElement.remove()">
+                X
+            </button>
+        </div>
+    </div>
+    <style>
+        @keyframes slide-down {
+            0% {
+                transform: translateY(-100%);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        .animate-slide-down {
+            animation: slide-down 0.5s ease-out;
+        }
+    </style>
+    {% endif %}
+
+    <!-- Container utama -->
+    <div
+        class="m-0 w-full h-full bg-cover bg-center overflow-hidden flex flex-wrap items-center justify-center box-border text-center text-white font-quicksand">
+
+        <div class="w-full custom-height flex flex-wrap items-center justify-center">
+            <!-- Logo dan tagline -->
+            <div class="flex flex-col items-start justify-center mr-8 mq675:m-4">
+                <h1 class="text-77xl font-bold mq450:text-[60px] mq750:text-49xl m-0">DigiLib</h1>
+                <div class="text-xs mq450:text-base font-poppins mt-2 ml-2 mq450:ml-0">
+                    <span>dari </span>
+                    <span class="font-semibold font-quicksand">Diginusa</span>
+                </div>
+            </div>
+
+            <!-- Formulir login -->
+            <main
+                class="flex-1 max-w-[400px] text-left text-xl text-black font-poppins flex items-center justify-center">
+                <div class="flex-row items-center justify-center bg-white rounded-6xl shadow-lg p-5 w-full">
+                    <h2 class="text-[32px] font-bold text-center mq450:text-lgi mq750:text-[26px]">Masuk Akun</h2>
+                    <div class="h-full w-full flex items-center justify-center mb-8 mt-4">
+                        <form class="flex-row w-[300px]" method="POST" action="{% url 'login_siswa_dan_guru' %}">
+                            {% csrf_token %}
+                            <!-- Input nama pengguna -->
+                            <div class="mb-6">
+                                <label for="username" class="block mb-2 text-sm font-medium">Nama Pengguna</label>
+                                <input id="username" name="username" type="text"
+                                    class="w-full p-3 rounded-md border-solid border-black focus:outline-none focus:shadow-sm transition duration-150 ease-in-out shadow-md"
+                                    required />
+                            </div>
+
+                            <!-- Input kata sandi -->
+                            <div class="mb-6">
+                                <label for="password" class="block mb-2 text-sm font-medium">Kata Sandi</label>
+                                <input id="password" name="password" type="password"
+                                    class="w-full p-3 rounded-md border-solid border-black focus:outline-none focus:shadow-sm transition duration-150 ease-in-out shadow-md"
+                                    required />
+                            </div>
+
+                            <!-- Tombol masuk -->
+                            <button type="submit"
+                                class="bg-white text-[16px] w-full py-3 px-4 bg-cornflowerblue text-black hover:text-white font-bold rounded-full hover:bg-cornflowerblue-100 transition duration-150 ease-in-out border border-solid border-black">
+                                Masuk
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+
+    <!-- Gambar latar belakang -->
+    <img class="fixed inset-0 w-full h-full object-cover -z-10 [transform:scale(1.162)]" alt="Latar belakang abstrak"
+        src="{% static 'images/login_background.png' %}" />
+</body>
+
+</html>

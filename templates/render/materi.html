@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+{% load tailwind_tags %}
+
+<head>
+    <meta charset="UTF-8">
+    <title>Materi Pelajaran - {{ materi.nama_materi }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    {% comment %} <link rel="stylesheet" href="{% static 'css/output.css' %}"> {% endcomment %}
+    {% tailwind_css %}
+    <link rel="icon" type="image/png" href="{% static 'images/logo-color-2-2@2x.png' %}">
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hammersmith One:wght@400&display=swap" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Plus Jakarta Sans:ital,wght@0,400;0,500;0,600;0,700;1,800&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Arial:wght@400;700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT Sans Caption:wght@700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=PT Serif Caption:wght@400&display=swap" />
+
+    <style>
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        #materi-viewer canvas {
+            pointer-events: none;
+            max-width: 100%;
+            height: auto;
+        }
+        /* Menyembunyikan konten pada elemen tertentu saat diambil screenshot */
+        @media (min-width: 0px) {
+        .no-screenshot {
+            background: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==');
+        }
+        }
+
+    </style>
+</head>
+
+<body class="p-0 m-0 flex justify-center items-center min-h-screen font-pj-bold-18" style="background-color: #6a6a6a;"
+    oncontextmenu="return false;">
+    <div class="w-full flex flex-col items-center">
+        <h1 class="text-2xl text-white font-bold mb-4 text-center mx-auto">{{ materi.nama_materi }} kelas {{ materi.kelas }}
+        </h1>
+        <div id="materi-container" class="border-2 border-gray-400 shadow-lg rounded-lg overflow-auto w-full max-w-4xl">
+            <div id="materi-viewer" class="w-full"></div>
+        </div>
+    </div>
+
+    <!-- Tombol Kembali ke Dashboard -->
+    <button onclick="window.history.back()"
+        class="fixed bottom-10 left-1/2 transform -translate-x-1/2 bg-blue-500 hover:bg-blue-600 no-underline text-white font-bold py-2 px-4 rounded mq450:text-sm mq450:py-1 mq450:px-3">
+        Kembali
+    </button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const url = '{{ materi.file_materi.url }}';
+
+            pdfjsLib.getDocument(url).promise.then(function (pdf) {
+                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                    pdf.getPage(pageNum).then(function (page) {
+                        const containerWidth = document.getElementById('materi-container').clientWidth;
+                        const viewport = page.getViewport({ scale: 1 });
+                        
+                        // Hitung skala berdasarkan lebar layar
+                        let scale = containerWidth / viewport.width;
+                        
+                        // Tingkatkan skala untuk layar mobile
+                        if (window.innerWidth <= 768) {
+                            scale *= 2.5; // Anda bisa menyesuaikan nilai ini
+                        }
+
+                        const canvas = document.createElement('canvas');
+                        const context = canvas.getContext('2d');
+
+                        canvas.height = viewport.height * scale;
+                        canvas.width = viewport.width * scale;
+
+                        const renderContext = {
+                            canvasContext: context,
+                            viewport: page.getViewport({ scale: scale })
+                        };
+
+                        page.render(renderContext);
+                        document.getElementById('materi-viewer').appendChild(canvas);
+                    });
+                }
+            });
+
+            // Tambahkan event listener untuk mencegah screenshot
+            document.addEventListener('keyup', (e) => {
+                if (e.key === 'PrintScreen' || e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                    e.preventDefault();
+                    alert('Screenshot dan inspeksi elemen dilarang!');
+                }
+            });
+
+            // Mencegah pengunduhan melalui drag and drop
+            document.addEventListener('dragstart', (e) => {
+                e.preventDefault();
+            });
+
+            // Mencegah klik kanan
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+            });
+
+            // Mencegah penggunaan shortcut keyboard untuk menyimpan halaman
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'p')) {
+                    e.preventDefault();
+                    alert('Menyimpan atau mencetak halaman dilarang!');
+                }
+            });
+        });
+
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'PrintScreen') {
+                navigator.clipboard.writeText('');
+                alert('Screenshot dilarang!');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'p') {
+                e.cancelBubble = true;
+                e.preventDefault();
+                e.stopImmediatePropagation();
+            }
+        });
+    </script>
+</body>

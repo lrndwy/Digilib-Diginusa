@@ -1,0 +1,233 @@
+{% extends 'base_guru.html' %}
+
+{% load static %}
+
+{% block title %}Dashboard Guru{% endblock %}
+
+{% block content %}
+{% include 'components/navbar_sidebar_guru.html' %}
+
+<div class="mx-auto max-w-screen px-4 2xs:p-[10px] sm:p-4 lg:p-8">
+    <h1 class="text-2xl font-pj-bold-18 text-[32px]  font-bold mt-16">Dashboard Guru</h1>
+
+    <!-- Filter Form -->
+    <form method="get" class="mb-4 mt-4" id="filterForm">
+        <div class="flex flex-row items-center gap-2">
+            <select name="kelas"
+                class="form-select w-full md:w-64 rounded-md border-gray-300 shadow-sm focus:outline-none h-[40px] px-4 text-[14px] font-pj-bold-18 appearance-none">
+                <option value="">Semua Kelas</option>
+                {% for kelas_value, kelas_label in kelas_choices %}
+                <option value="{{ kelas_value }}" 
+                {% if kelas_value == request.GET.kelas %} 
+                selected 
+                {% endif %}>{{ kelas_label }}</option>
+                {% endfor %}
+            </select>
+            <select name="mapel"
+                class="form-select w-full md:w-64 rounded-md border-gray-300 shadow-sm focus:outline-none h-[40px] px-4 text-[14px] font-pj-bold-18 appearance-none">
+                <option value="">Semua Mata Pelajaran</option>
+                {% for mapel in mata_pelajaran %}
+                <option value="{{ mapel.id }}" 
+                {% if mapel.id|stringformat:"s" == request.GET.mapel %} 
+                selected 
+                {% endif %}>
+                    {{ mapel.mata_pelajaran }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit"
+                class="bg-cornflowerblue-100 border-none hover:bg-cornflowerblue-200 text-white font-bold py-3 px-5 rounded-md transition duration-300 ease-in-out">
+                Filter
+            </button>
+        </div>
+    </form>
+
+    <div class="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-1 gap-6 mt-8">
+        <!-- Card Jumlah Materi -->
+        <a href="{% url 'crud_materi' %}" class="no-underline">
+            <div
+                class="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2 border-sm border border-solid cursor-pointer">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-pj-bold-18 text-gray-800">Materi</h2>
+                        <div class="bg-blue-100 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-4xl font-pj-bold-18 font-bold text-gray-800">{{ materi_guru.count }}</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Card Jumlah Perangkat Kurikulum -->
+        <a href="{% url 'crud_perangkat_kurikulum' %}" class="no-underline">
+            <div
+                class="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2 border-sm border border-solid">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-pj-bold-18 text-gray-800">Perangkat Kurikulum</h2>
+                        <div class="bg-blue-100 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-4xl font-pj-bold-18 text-gray-800 font-bold">{{ perangkat_kurikulum.count }}</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Card Jumlah Buku -->
+        <a href="{% url 'crud_buku' %}" class="no-underline">
+            <div
+                class="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2 border-sm border border-solid">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-pj-bold-18 text-gray-800">Buku</h2>
+                        <div class="bg-blue-100 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-4xl font-pj-bold-18 text-gray-800 font-bold">{{ buku_all.count }}</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Card Jumlah FlipPDF -->
+        <a href="{% url 'crud_flippdf' %}" class="no-underline">
+            <div
+                class="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2 border-sm border border-solid">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-pj-bold-18 text-gray-800">Buku Interaktif</h2>
+                        <div class="bg-blue-100 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-4xl font-pj-bold-18 text-gray-800 font-bold">{{ flippdf_all.count }}</p>
+                </div>
+            </div>
+        </a>
+
+        {% comment %} <!-- Card Jumlah Mata Pelajaran -->
+        <a href="{% url 'crud_mata_pelajaran' %}" class="no-underline">
+            <div
+                class="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2 border-2 border-blue-600">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-pj-bold-18 text-gray-800">Mata Pelajaran</h2>
+                        <div class="bg-blue-100 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-4xl font-pj-bold-18 text-gray-800 font-bold">{{ mata_pelajaran.count }}</p>
+                </div>
+            </div>
+        </a>
+
+        <!-- Card Jumlah Kelas -->
+        <a href="{% url 'crud_jenjang_dan_kelas' %}" class="no-underline">
+            <div
+                class="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl transform hover:-translate-y-2 border-2 border-blue-600">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-pj-bold-18 text-gray-800">Jenjang dan Kelas</h2>
+                        <div class="bg-blue-100 rounded-full p-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            </svg>
+                        </div>
+                    </div>
+                    <p class="text-4xl font-pj-bold-18 text-gray-800 font-bold">{{ kelas_choices|length }}</p>
+                </div>
+            </div>
+        </a> {% endcomment %}
+    </div>
+
+    <!-- Buku Section -->
+    {% if buku_all %}
+    <div class="p-2 relative mt-8">
+        <span class="text-[20px] font-pj-bold-18 mb-4">Buku pelajaran</span>
+        <div id="slider-buku" class="flex flex-nowrap gap-4 overflow-x-auto scrollbar-hide p-5">
+            {% for buku in buku_all %}
+            <div class="bg-white rounded-lg shadow-md p-4 flex flex-col w-60 flex-shrink-0 hover:shadow-sm transition duration-300 ease-in-out"
+                style="height: 100%; display: flex; flex-direction: column;">
+                {% if buku.cover_image %}
+                <div class="flex-grow mb-2 border-md border-gray-300 rounded-md overflow-hidden relative"
+                    style="flex: 1;">
+                    <img src="{{ buku.cover_image.url }}" alt="{{ buku.nama_buku }}" class="w-full h-full object-cover">
+                </div>
+                {% endif %}
+                <h3 class="text-[16px] font-pj-bold-18 mb-1 text-center truncate">{{ buku.nama_buku }}</h3>
+                <p class="text-[12px] font-pj-bold-18 mb-2"><strong>Kelas:</strong> {{ buku.kelas }}<br><strong>Mata
+                        Pelajaran:</strong> {{ buku.mata_pelajaran }}</p>
+                <a href="{% url 'render_buku' buku.id %}"
+                    class="bg-cornflowerblue-100 hover:bg-cornflowerblue-200 text-white no-underline font-bold py-2 px-4 font-pj-bold-18 rounded-lg mt-auto inline-block text-center text-[16px] transition duration-300 ease-in-out">
+                    Lihat Buku
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <p class="text-[14px] font-pj-bold-18 mt-8">Tidak ada buku yang tersedia saat ini.</p>
+    {% endif %}
+
+    <!-- FlipPDF Section -->
+    {% if flippdf_all %}
+    <div class="p-2 relative mt-8">
+        <span class="text-[20px] font-pj-bold-18 mb-4">Buku Interaktif</span>
+        <div id="slider-flippdf" class="flex flex-nowrap gap-4 overflow-x-auto scrollbar-hide p-5">
+            {% for flippdf in flippdf_all %}
+            <div class="bg-white rounded-lg shadow-md p-4 flex flex-col w-60 flex-shrink-0 hover:shadow-sm transition duration-300 ease-in-out"
+                style="height: 100%; display: flex; flex-direction: column;">
+                {% if flippdf.cover_file %}
+                <div class="flex-grow mb-2 border-md border-gray-300 rounded-md overflow-hidden relative"
+                    style="flex: 1;">
+                    <img src="{% get_media_prefix %}{{ flippdf.cover_file }}" alt="{{ flippdf.title }}"
+                        class="w-full h-full object-cover">
+                </div>
+                {% endif %}
+                <h3 class="text-[16px] font-pj-bold-18 mb-1 text-left truncate">{{ flippdf.title }}</h3>
+                <p class="text-[12px] font-pj-bold-18 mb-2">
+                    <strong>Kelas:</strong> {{ flippdf.kelas }}<br>
+                    <strong>Mata Pelajaran:</strong> {{ flippdf.mata_pelajaran }}
+                </p>
+                <a href="{% url 'flippdf_render' flippdf.id %}"
+                    class="bg-cornflowerblue-100 hover:bg-cornflowerblue-200 text-white no-underline font-bold py-2 px-4 font-pj-bold-18 rounded-lg mt-auto inline-block text-center text-[16px] transition duration-300 ease-in-out">
+                    Lihat Buku
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <p class="text-[14px] font-pj-bold-18 mt-8">Tidak ada Buku Interaktif yang tersedia saat ini.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Tambahkan script untuk menggeser buku dan FlipPDF jika diperlukan
+</script>
+{% endblock %}

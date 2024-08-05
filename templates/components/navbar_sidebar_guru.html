@@ -1,0 +1,201 @@
+{% load static %}
+
+<!-- Header 1 -->
+<header class="bg-white shadow-md z-50 fixed top-0 left-0 right-0 font-pj-bold-18">
+    <div class="mx-auto max-w-screen sm:px-[20px] 2xs:px-[20px] md:px-6 lg:px-8">
+        <div class="flex h-16 items-center justify-between">
+            <!-- Logo -->
+            <div class="md:flex md:items-center md:gap-12">
+                <a class="block text-teal-600 hover:text-teal-700 focus:text-teal-700" href="#" aria-label="Home">
+                    <img src="{% static 'images/1688722946digi-3@2x.png' %}" alt="logo" class="h-10">
+                </a>
+            </div>
+
+            <!-- Sidebar Button -->
+            <div class="flex items-center gap-4">
+                <button
+                    class="flex items-center font-pj-bold-18 font-extrabold justify-center px-4 py-2 bg-white text-cornflowerblue-200 rounded-md focus:outline-none border-0 transition duration-300"
+                    id="menu-header-1-button">
+                    MENU
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Sidebar -->
+<div id="menu-header-1"
+    class="fixed z-40 right-0 top-0 h-screen w-64 text-white shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out">
+    <div class="pt-16 px-0">
+
+        <!-- Menu -->
+        <div class="m-0 bg-cornflowerblue-200 h-screen items-center justify-center flex flex-col">
+            <ul class="m-0 space-y-4 list-none p-[30px] flex-grow">
+                <li class="mb-2">
+                    <div class="h-auto p-2 rounded-[10px]">
+                        <a href="{% url 'dashboard_guru' %}"
+                            class="flex items-center text-white hover:text-gray-300 no-underline text-[20px] font-pj-bold-18 font-extrabold">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path
+                                    d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" />
+                            </svg>
+                            Dashboard
+                        </a>
+                    </div>
+                </li>
+                <li class="mb-2">
+                    <div class="h-auto p-2 rounded-[10px]">
+                        <a href="{% url 'crud_materi' %}"
+                            class="flex items-center text-white hover:text-gray-300 no-underline text-[20px] font-pj-bold-18 font-extrabold">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path
+                                    d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+                            </svg>
+                            Materi
+                        </a>
+                    </div>
+                </li>
+                <li class="mb-2">
+                    <div class="h-auto p-2 rounded-[10px]">
+                        <a href="{% url 'crud_perangkat_kurikulum' %}"
+                            class="flex items-center text-white hover:text-gray-300 no-underline text-[20px] font-pj-bold-18 font-extrabold">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path
+                                    d="M3 3h14a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V5a2 2 0 012-2zm0 2v10h14V5H3zm2 2h10v2H5V7zm0 4h10v2H5v-2z" />
+                            </svg>
+                            Perangkat Kurikulum
+                        </a>
+                    </div>
+                </li>
+                <li class="mb-2">
+                    <div class="h-auto p-2 rounded-[10px]">
+                        <a href="{% url 'crud_buku' %}"
+                            class="flex items-center text-white hover:text-gray-300 no-underline text-[20px] font-pj-bold-18 font-extrabold">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path
+                                    d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+                            </svg>
+                            Buku
+                        </a>
+                    </div>
+                </li>
+                <li class="mb-2">
+                    <div class="h-auto p-2 rounded-[10px]">
+                        <a href="{% url 'crud_flippdf' %}"
+                            class="flex items-center text-white hover:text-gray-300 no-underline text-[20px] font-pj-bold-18 font-extrabold">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Buku Interaktif
+                        </a>
+                    </div>
+                </li>
+                {% comment %} <li class="mb-2">
+                    <div class="h-auto p-2 rounded-[10px]">
+                        <a href="{% url 'crud_mata_pelajaran' %}"
+                            class="flex items-center text-white hover:text-gray-300 no-underline text-[20px] font-pj-bold-18 font-extrabold">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                                <path fill-rule="evenodd"
+                                    d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Mata Pelajaran
+                        </a>
+                    </div>
+                </li>
+                <li class="mb-2">
+                    <div class="h-auto p-2 rounded-[10px]">
+                        <a href="{% url 'crud_jenjang_dan_kelas' %}"
+                            class="flex items-center text-white hover:text-gray-300 no-underline text-[20px] font-pj-bold-18 font-extrabold">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path
+                                    d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
+                            </svg>
+                            Kelas
+                        </a>
+                    </div>
+                </li> {% endcomment %}
+                <li class="mb-2">
+                    <div class="h-auto p-2 rounded-[10px]">
+                        <a href="{% url 'tentang_akun_guru' %}"
+                            class="flex items-center text-white hover:text-gray-300 no-underline text-[20px] font-pj-bold-18 font-extrabold">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Tentang akun
+                        </a>
+                    </div>
+                </li>
+
+            </ul>
+            <div class="mb-2">
+                <div class="h-auto rounded-[10px] px-[50px] py-[5px]">
+                    {% if guru and guru.sekolah and guru.sekolah.logo %}
+                    <div class="flex justify-center">
+                        <img src="{{ guru.sekolah.logo.url }}" alt="Logo {{ guru.sekolah.nama }}"
+                            class="h-24 rounded-md">
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="h-auto rounded-[10px] px-[50px] py-[5px] text-center">
+                    <p class="text-white text-[18px] font-pj-bold-18 font-extrabold mb-1">
+                        {{ guru.nama }}
+                    </p>
+                    <hr class="border-t border-white w-16 mx-auto my-2">
+                    <p class="text-white text-[14px] font-pj-bold-18 font-bold">
+                        {{ guru.sekolah.nama }}
+                    </p>
+                </div>
+            </div>
+            <div class="mb-[80px]">
+                <a href="{% url 'logout_user' %}" class="no-underline">
+                    <div class="h-auto p-2 rounded-[10px] bg-white hover:bg-gray-300 px-[50px] py-[10px]">
+                        <div
+                            class="flex items-center justify-center text-cornflowerblue-200 hover:text-cornflowerblue-300 no-underline text-[20px] font-pj-bold-18 font-extrabold">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            Logout
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleMenu(menuId) {
+        var menu = document.getElementById(menuId);
+        var button = document.getElementById(menuId + '-button');
+
+        if (menu.classList.contains('translate-x-full')) {
+            menu.classList.remove('translate-x-full');
+            menu.classList.add('translate-x-0');
+        } else {
+            menu.classList.remove('translate-x-0');
+            menu.classList.add('translate-x-full');
+        }
+    }
+
+    document.getElementById('menu-header-1-button').addEventListener('click', function () {
+        toggleMenu('menu-header-1');
+    });
+</script>
