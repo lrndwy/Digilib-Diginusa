@@ -1,5 +1,5 @@
 ---
 deployment:
 tasks:
-- export DEPLOYPATH=/home/endofbeg/Digilib-Diginusa
+- export DEPLOYPATH=/home/endofbeg/Digilib
 = /bin/cp -r * $DEPLOYPATH
