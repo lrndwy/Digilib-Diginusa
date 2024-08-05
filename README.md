@@ -32,7 +32,6 @@ venv\Scripts\activate  # Untuk Windows
 
 ```bash
 pip install -r requirements.txt
-npm install
 ```
 
 ### 4. Atur Database
