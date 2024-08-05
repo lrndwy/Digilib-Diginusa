@@ -5,3 +5,5 @@
 .gitmodules
 .vscode
 .DS_Store
+media
+db.sqlite3
