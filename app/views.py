@@ -16,11 +16,12 @@ def index(request):
     guru = None
     siswa = None
     
-    if Guru.objects.filter(user=request.user).exists():
-        guru = Guru.objects.get(user=request.user)
-    elif Siswa.objects.filter(user=request.user).exists():
-        siswa = Siswa.objects.get(user=request.user)
-        
+    if request.user.is_authenticated:
+        if Guru.objects.filter(user=request.user).exists():
+            guru = Guru.objects.get(user=request.user)
+        elif Siswa.objects.filter(user=request.user).exists():
+            siswa = Siswa.objects.get(user=request.user)
+    
     semua_buku = Buku.objects.filter(untuk=None, status=True)
     context = {
         'guru': guru,
