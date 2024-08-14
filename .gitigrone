@@ -1,9 +1,0 @@
-.dist
-.gitignore
-.gitkeep
-.gitmodules
-.vscode
-.DS_Store
-media
-db.sqlite3
-.env

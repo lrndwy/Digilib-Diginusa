@@ -5,9 +5,9 @@ from django.shortcuts import redirect, render
 from django.urls import path, reverse
 from django.utils.html import format_html
 
-from .forms import ImportGuruForm, ImportSiswaForm
+from .forms import ImportSiswaForm
 from .models import *
-from .utils import process_excel_file_guru, process_excel_file_siswa
+from .utils import process_excel_file_siswa
 
 
 # Register your models here.
@@ -57,41 +57,7 @@ class GuruAdmin(admin.ModelAdmin):
     list_filter = ['sekolah__nama']
     search_fields = ['nama', 'sekolah__nama', 'user__username']
 
-    def get_urls(self):
-        urls = super().get_urls()
-        custom_urls = [
-            path('import-excel-guru/', self.import_excel_guru, name='import_excel_guru'),
-        ]
-        return custom_urls + urls
 
-    def import_excel_guru(self, request):
-        if request.method == 'POST':
-            form = ImportGuruForm(request.POST, request.FILES)
-            if form.is_valid():
-                excel_file = request.FILES['file']
-                result = process_excel_file_guru(excel_file)
-                if result['success']:
-                    self.message_user(request, 'Data guru berhasil diimpor')
-                else:
-                    self.message_user(request, f'Terjadi kesalahan: {result["error"]}', level='error')
-                return redirect('..')
-        else:
-            form = ImportGuruForm()
-        
-        context = {
-            'form': form,
-            'title': 'Import Guru dari Excel',
-            'site_title': self.admin_site.site_title,
-            'site_header': self.admin_site.site_header,
-        }
-        return render(request, 'admin/import_excel_guru.html', context)
-
-    def changelist_view(self, request, extra_context=None):
-        extra_context = extra_context or {}
-        extra_context['show_import_button'] = True
-        return super().changelist_view(request, extra_context=extra_context)
-
-    change_list_template = 'admin/change_list_guru.html'
 
 @admin.register(Siswa)
 class SiswaAdmin(admin.ModelAdmin):

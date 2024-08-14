@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
+
 from .models import *
+
 
 class SiswaForm(forms.ModelForm):
     nama = forms.CharField(max_length=255)
@@ -56,8 +58,6 @@ class GuruForm(forms.ModelForm):
             guru.save()
         return guru
 
-class ImportGuruForm(forms.Form):
-    file = forms.FileField()
     
 
 class FlipPDFForm(forms.ModelForm):
