@@ -41,6 +41,14 @@
         }
         }
 
+        .page-wrapper {
+            border-bottom: 1px solid #ccc; /* Tambahkan garis pembatas */
+            padding-bottom: 20px; /* Tambahkan padding bawah */
+        }
+
+        .page-wrapper:last-child {
+            border-bottom: none; /* Hilangkan garis pembatas untuk halaman terakhir */
+        }
     </style>
 </head>
 
@@ -91,7 +99,14 @@
                         };
 
                         page.render(renderContext);
-                        document.getElementById('buku-viewer').appendChild(canvas);
+                        
+                        // Buat div pembungkus untuk setiap halaman
+                        const pageWrapper = document.createElement('div');
+                        pageWrapper.className = 'page-wrapper';
+                        pageWrapper.style.marginBottom = '20px'; // Tambahkan margin bottom
+                        pageWrapper.appendChild(canvas);
+                        
+                        document.getElementById('buku-viewer').appendChild(pageWrapper);
                     });
                 }
             });

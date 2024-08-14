@@ -9,7 +9,6 @@
     <title>Materi Pelajaran - {{ materi.nama_materi }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    {% comment %} <link rel="stylesheet" href="{% static 'css/output.css' %}"> {% endcomment %}
     {% tailwind_css %}
     <link rel="icon" type="image/png" href="{% static 'images/logo-color-2-2@2x.png' %}">
 
@@ -42,6 +41,14 @@
         }
         }
 
+        .page-wrapper {
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 20px;
+        }
+
+        .page-wrapper:last-child {
+            border-bottom: none;
+        }
     </style>
 </head>
 
@@ -92,7 +99,14 @@
                         };
 
                         page.render(renderContext);
-                        document.getElementById('materi-viewer').appendChild(canvas);
+                        
+                        // Buat div pembungkus untuk setiap halaman
+                        const pageWrapper = document.createElement('div');
+                        pageWrapper.className = 'page-wrapper';
+                        pageWrapper.style.marginBottom = '20px';
+                        pageWrapper.appendChild(canvas);
+                        
+                        document.getElementById('materi-viewer').appendChild(pageWrapper);
                     });
                 }
             });
