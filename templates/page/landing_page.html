@@ -132,11 +132,29 @@
                             <a href="#kontakkami2"
                                 class="[text-decoration:none] relative font-semibold text-[inherit] inline-block min-w-[93px] cursor-pointer z-[2]">Kontak</a>
                         </nav>
-                        <button
-                            class="cursor-pointer [border:none] py-[10px] px-[29px] bg-deepskyblue-200 w-[117px] rounded-3xs flex flex-row items-start justify-start box-border z-[2] hover:bg-steelblue-400 mq675:w-auto mq675:flex-grow-0">
+                        {% if request.user.is_superuser %}
+                            <a href="{% url 'admin:index' %}"
+                                class="cursor-pointer [border:none] py-[10px] px-[29px] bg-deepskyblue-200 w-[117px] rounded-3xs flex flex-row items-start justify-start box-border z-[2] hover:bg-steelblue-400 mq675:w-auto mq675:flex-grow-0 [text-decoration:none]">
+                                <span class="relative text-lg leading-[24px] font-bold font-quicksand text-white text-center inline-block min-w-[56px]">Admin</span>
+                            </a>
+                        {% elif request.user.is_authenticated %}
+                            {% if guru %}
+                                <a href="{% url 'dashboard_guru' %}"
+                                    class="cursor-pointer [border:none] py-[10px] px-[29px] bg-deepskyblue-200 w-[117px] rounded-3xs flex flex-row items-start justify-start box-border z-[2] hover:bg-steelblue-400 mq675:w-auto mq675:flex-grow-0 [text-decoration:none]">
+                                    <span class="relative text-lg leading-[24px] font-bold font-quicksand text-white text-center inline-block min-w-[56px]">Guru</span>
+                                </a>
+                            {% elif siswa %}
+                                <a href="{% url 'dashboard' %}"
+                                    class="cursor-pointer [border:none] py-[10px] px-[29px] bg-deepskyblue-200 w-[117px] rounded-3xs flex flex-row items-start justify-start box-border z-[2] hover:bg-steelblue-400 mq675:w-auto mq675:flex-grow-0 [text-decoration:none]">
+                                    <span class="relative text-lg leading-[24px] font-bold font-quicksand text-white text-center inline-block min-w-[56px]">Siswa</span>
+                                </a>
+                            {% endif %}
+                        {% else %}
                             <a href="{% url 'login_siswa_dan_guru' %}"
-                                class="[text-decoration:none] relative text-lg leading-[24px] font-bold font-quicksand text-white text-left inline-block min-w-[56px]">Masuk</a>
-                        </button>
+                                class="cursor-pointer [border:none] py-[10px] px-[29px] bg-deepskyblue-200 w-[117px] rounded-3xs flex flex-row items-start justify-start box-border z-[2] hover:bg-steelblue-400 mq675:w-auto mq675:flex-grow-0 [text-decoration:none]">
+                                <span class="relative text-lg leading-[24px] font-bold font-quicksand text-white text-center inline-block min-w-[56px]">Masuk</span>
+                            </a>
+                        {% endif %}
                     </div>
                 </header>
             </div>

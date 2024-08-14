@@ -1,5 +1,4 @@
 .dist
-.env
 .gitignore
 .gitkeep
 .gitmodules
@@ -7,3 +6,4 @@
 .DS_Store
 media
 db.sqlite3
+.env

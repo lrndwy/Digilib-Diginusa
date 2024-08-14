@@ -1,15 +1,15 @@
-from django.db import models
-from django.contrib.auth.models import User
-from django.db import transaction
-import os
-import fitz
-from PIL import Image
-from io import BytesIO
-from django.core.files import File
-import zipfile
-from django.conf import settings
-import shutil
 import logging
+import os
+import shutil
+import zipfile
+from io import BytesIO
+
+import fitz
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.core.files import File
+from django.db import models, transaction
+from PIL import Image
 
 logger = logging.getLogger(__name__)
 
@@ -65,6 +65,7 @@ class Guru(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     sekolah = models.ForeignKey(Sekolah, on_delete=models.CASCADE)
     mata_pelajaran = models.ForeignKey(MataPelajaran, on_delete=models.SET_NULL, null=True, blank=True)
+    jenjang = models.ManyToManyField(JenjangDanKelas)
 
     def __str__(self):
         return self.nama

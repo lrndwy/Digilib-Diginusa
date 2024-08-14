@@ -13,8 +13,18 @@ from .models import *
 
 
 def index(request):
+    guru = None
+    siswa = None
+    
+    if Guru.objects.filter(user=request.user).exists():
+        guru = Guru.objects.get(user=request.user)
+    elif Siswa.objects.filter(user=request.user).exists():
+        siswa = Siswa.objects.get(user=request.user)
+        
     semua_buku = Buku.objects.filter(untuk=None, status=True)
     context = {
+        'guru': guru,
+        'siswa': siswa,
         'semua_buku': semua_buku
     }
     return render(request, 'page/landing_page.html', context)
@@ -100,8 +110,16 @@ def dashboard_guru(request):
         materi_guru = MateriGuru.objects.filter(guru=guru, sekolah=guru.sekolah)
         perangkat_kurikulum = PerangkatKurikulum.objects.filter(guru=guru, sekolah=guru.sekolah)
         
-        buku_all = Buku.objects.filter(Q(untuk=None) | Q(untuk=guru.sekolah), status=True)
-        flippdf_all = FlipPDF.objects.filter(Q(untuk=None) | Q(untuk=guru.sekolah), status=True)
+        buku_all = Buku.objects.filter(
+            Q(untuk=None) | Q(untuk=guru.sekolah),
+            status=True,
+            kelas__in=guru.jenjang.all()
+        )
+        flippdf_all = FlipPDF.objects.filter(
+            Q(untuk=None) | Q(untuk=guru.sekolah),
+            status=True,
+            kelas__in=guru.jenjang.all()
+        )
         mata_pelajaran = MataPelajaran.objects.all()
         
         kelas = request.GET.get('kelas')
@@ -115,7 +133,7 @@ def dashboard_guru(request):
             buku_all = buku_all.filter(mata_pelajaran__id=mapel)
             flippdf_all = flippdf_all.filter(mata_pelajaran__id=mapel)
         
-        kelas_choices = [(k.id, k.nama_jenjang_kelas) for k in JenjangDanKelas.objects.all()]
+        kelas_choices = [(k.id, k.nama_jenjang_kelas) for k in guru.jenjang.all()]
         
         context = {
             'guru': guru,
@@ -191,8 +209,8 @@ def crud_buku(request):
             messages.success(request, 'Buku berhasil dihapus.')
         return redirect('crud_buku')
     
-    buku_list = Buku.objects.filter(untuk=guru.sekolah, mata_pelajaran=guru.mata_pelajaran)
-    kelas_list = JenjangDanKelas.objects.all()
+    buku_list = Buku.objects.filter(untuk=guru.sekolah, mata_pelajaran=guru.mata_pelajaran, kelas__in=guru.jenjang.all())
+    kelas_list = guru.jenjang.all()
     mata_pelajaran_list = MataPelajaran.objects.all()
     context = {
         'guru': guru,
@@ -236,8 +254,8 @@ def crud_materi(request):
         return redirect('crud_materi')
     
     
-    materi_list = MateriGuru.objects.filter(guru=guru, mata_pelajaran_id=guru.mata_pelajaran.id)
-    kelas_list = JenjangDanKelas.objects.all()
+    materi_list = MateriGuru.objects.filter(guru=guru, mata_pelajaran_id=guru.mata_pelajaran.id, kelas__in=guru.jenjang.all())
+    kelas_list = guru.jenjang.all()
     mata_pelajaran_list = MataPelajaran.objects.all()
     context = {
         'guru': guru,
@@ -316,8 +334,8 @@ def crud_flippdf(request):
             messages.success(request, 'FlipPDF berhasil dihapus.')
         return redirect('crud_flippdf')
 
-    flippdf_list = FlipPDF.objects.filter(untuk=guru.sekolah, mata_pelajaran_id=guru.mata_pelajaran.id)
-    kelas_list = JenjangDanKelas.objects.all()
+    flippdf_list = FlipPDF.objects.filter(untuk=guru.sekolah, mata_pelajaran_id=guru.mata_pelajaran.id, kelas__in=guru.jenjang.all())
+    kelas_list = guru.jenjang.all()
     mata_pelajaran_list = MataPelajaran.objects.all()
     context = {
         'guru': guru,
