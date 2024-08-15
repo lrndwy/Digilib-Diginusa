@@ -181,6 +181,7 @@ JAZZMIN_SETTINGS = {
         "app.jenjangdankelas": "fas fa-landmark",
     },
     "show_ui_builder": True,
+    "changeform_format": "single",
 }
 
 SECURE_SSL_REDIRECT = False
