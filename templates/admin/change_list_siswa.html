@@ -3,11 +3,11 @@
 {% block object-tools-items %}
 {{ block.super }}
 {% if show_import_button %}
-
-
 <a href="{% url 'admin:import_excel' %}" class="btn btn-primary">
     Import Excel
 </a>
-
+<a href="{% url 'download_excel_template' %}" class="btn btn-warning">
+    Download Format Excel
+</a>
 {% endif %}
 {% endblock %}

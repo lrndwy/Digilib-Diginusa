@@ -27,5 +27,7 @@ urlpatterns = [
     path('siswa/', views.dashboard, name='dashboard'),
     path('siswa/dashboard/', views.dashboard, name='dashboard'),
     path('siswa/tentang-akun', views.tentang_akun, name='tentang_akun'),
+    
+    path('download-excel-template/', views.download_excel_template, name='download_excel_template'),
 
 ]

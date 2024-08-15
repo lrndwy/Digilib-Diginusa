@@ -6,6 +6,7 @@ from django.contrib.auth import (authenticate, login, logout,
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import PasswordChangeForm
 from django.db.models import Q
+from django.http import FileResponse, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import GuruForm, SiswaForm
@@ -448,6 +449,14 @@ def tentang_akun(request):
         'siswa': siswa
     }
     return render(request, 'siswa/tentang_akun.html', context)
+
+
+def download_excel_template(request):
+    file_path = os.path.join(settings.STATIC_ROOT, 'excel_templates', 'format_excel_siswa.xlsx')
+    if os.path.exists(file_path):
+        return FileResponse(open(file_path, 'rb'), as_attachment=True, filename='format_excel_siswa.xlsx')
+    else:
+        return HttpResponse("File tidak ditemukan", status=404)
 
 
 def custom_404(request, exception):
