@@ -48,6 +48,34 @@
         .page-wrapper:last-child {
             border-bottom: none; /* Hilangkan garis pembatas untuk halaman terakhir */
         }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #spinner-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 9999;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
     </style>
 </head>
 
@@ -67,13 +95,23 @@
         Kembali
     </button>
 
+    <div id="spinner-container">
+        <div class="spinner"></div>
+        <p class="text-white mt-3">Sedang memuat...</p>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const url = '{{ buku.file_buku.url }}';
+            const spinnerContainer = document.getElementById('spinner-container');
+            const bukuViewer = document.getElementById('buku-viewer');
 
             pdfjsLib.getDocument(url).promise.then(function (pdf) {
-                for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                const totalPages = pdf.numPages;
+                let currentPage = 1;
+
+                function loadPage(pageNum) {
                     pdf.getPage(pageNum).then(function (page) {
                         const containerWidth = document.getElementById('buku-container').clientWidth;
                         const viewport = page.getViewport({ scale: 1 });
@@ -106,8 +144,22 @@
                         pageWrapper.appendChild(canvas);
                         
                         document.getElementById('buku-viewer').appendChild(pageWrapper);
+
+                        if (pageNum === totalPages) {
+                            spinnerContainer.style.display = 'none';
+                            bukuViewer.style.display = 'block';
+                        }
+
+                        if (pageNum < totalPages) {
+                            requestAnimationFrame(() => loadPage(pageNum + 1));
+                        }
                     });
                 }
+
+                loadPage(currentPage);
+            }).catch(function(error) {
+                console.error('Error loading PDF:', error);
+                spinnerContainer.style.display = 'none';
             });
 
             // Tambahkan event listener untuk mencegah screenshot
